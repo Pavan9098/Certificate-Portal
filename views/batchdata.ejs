@@ -1,0 +1,74 @@
+<%- include ('header') -%>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand"  style="background-color: maroon;color: beige; border-radius: 5px;" href="/staff">/Back</a>
+    <a class="nav-link ml-auto"  style="background-color: maroon;color: beige; border-radius: 5px;" href="/batches/addNewSem?batch=<%= batch %>">Add new Sem</a>
+  </nav>
+<div class="container px-3 py-4">
+    <h2 style="margin: 20px; box-sizing: content-box; padding: 10px; text-align: center; background-color: #561C24; color: beige;">Batch  <%= batch %> </h2>
+    
+    <form style="text-align: center;" id="form1" action="/selectSem" method="post">
+        <br>
+        <label style=" font-size: large; font-weight:bold;"for="sem">Select sem:</label>
+        <input type="text" style="display: none" name="batch" id="batch" value="<%=batch%>">
+        <select name="sem" id="sem" style="padding: 6px; font-size: 16px; border: 1px solid #ccc; border-radius: 5px;">
+            <% for( let index = 1; index < results; index++ ) { %>
+                <% if (sem===index) { %>
+                    <option value="<%= index %>" selected><%= index %></option>
+                <% } else { %>
+                    <option value="<%= index %>"><%= index %></option>
+                <% } %>
+                
+            <% } %>
+            
+        </select>
+        <br><br>
+        <input type="submit"  style="background-color: maroon;color: beige; border-radius: 5px;" class="button btn-secondary rounded">
+        <br><br>
+    </form>
+
+    <% if (docs) { %>
+        <h3 style="margin: 20px; box-sizing: content-box; padding: 10px; text-align: center; background-color: #561C24; color: beige;">Semester  - <%= sem %> </h3><br>
+        <div style="margin:auto">
+            <form action="/updateTaken" method="post">
+                <input type="text" style="display: none" name="batch" id="batch" value="<%=batch%>">
+                <input type="text" style="display: none" name="sem" id="sem" value="<%=sem%>">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <table class="table ">
+                                <tr>
+                                    <th>Regd no</th>
+                                    <th>Status</th>
+                                </tr>
+                                <% docs.forEach(element => { %>
+                                    
+                                    <tr>
+                                        <td><%= element.reg_no %></td>
+                                        <% if (element.passed==true) { %>
+                                            <% if (element.taken_status==false) { %>
+                                                <td><input type="checkbox" name="<%= element._id %>" id="<%= element._id %>"></td>
+                                            <% } else { %>
+                                                <td>taken</td>
+                                            
+                                            <% } %>
+                                        <% } else { %>
+                                            <td>not passed</td>
+                                        <% } %>
+                                        
+                                    </tr>
+                                <% }) %>
+                            </table>  
+                            <div style="text-align: center;">
+                                <input class="button btn-primary rounded" type="submit" value="Form submit"  style="background-color: maroon;color: beige; border-radius: 5px;">
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                
+            </form>
+        </div>
+    <% } %>
+</div>
+<%- include ('footer') -%>

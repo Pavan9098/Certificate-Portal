@@ -1,0 +1,64 @@
+<%- include ('header') -%>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" style="background-color: maroon;color: beige; border-radius: 5px;" href="/">Home</a>
+    <a class="nav-link ml-auto " style="background-color: maroon;color: beige; border-radius: 5px;" href="/login" >login</a>
+</nav>
+
+<H2 style="margin: 20px; box-sizing: content-box; padding: 10px; text-align: center; border-radius: 5px; background-color: #561C24; color: beige;">CERTIFICATES PORTAL</H2>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card mt-5">
+                
+                <div style="background-color: #e4ab66; border-radius: 10px;" class="card-body">
+                    <form action="/" method="post">
+                        <div class="form-group">
+                            <label for="batch">Batch:  </label>
+                            <input type="text" class="form-control" id="batch" name="batch">
+                        </div>
+                        <div class="form-group">
+                            <label for="reg_no">Reg No:</label>
+                            <input type="text" class="form-control" id="reg_no" name="reg_no">
+                        </div>
+                        <input type="submit" style="background-color: maroon; box-sizing: content-box; color: beige; border-radius: 5px;" class="button btn-primary"  value="Submit">
+                    </form>
+                    <% if (message) { %>
+                     <%= message %>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% if (links) { %>
+        <H2 style="margin: 20px; padding: 10px; box-sizing: content-box; text-align: center; background-color: #561C24; color: beige; border-radius: 5px;">SEMESTER WISE CERTIFICATES</H2>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <table class="table " style=" border-radius: 5px;">
+                    <tr>
+                        <th>Sem</th>
+                        <th>Link</th>
+                    </tr>
+                    <% var i=1 %>
+                    <% links.forEach(element => { %>
+                        
+                        <tr>
+                            <td><%= i %>st Sem</td>
+                            <% if (element) { %>
+                               <td> <a href="<%= "https://"+element %>" target="_blank">Link</a></td>
+                             <% } else { %>
+                                <td>fail</td>
+                            <% } %>
+                            <% i++ %>
+                        </tr>
+                    <% }) %>
+                </table>  
+                
+            </div>
+            
+        </div>
+    <% } %>
+</div>
+
+<%- include ('footer') -%>

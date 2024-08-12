@@ -1,0 +1,37 @@
+<%- include('header') %>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" style="background-color: maroon;color: beige; border-radius: 5px;" href="/"><-Back</a>
+    
+</nav>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card mt-5">
+                <div class="card-header" style="background-color: maroon;color: beige; border-radius: 5px;">
+                    Login
+                </div>
+                <div class="card-body">
+                    <form id="loginForm" action="/login" method="POST">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="background-color: maroon;">Login</button>
+                    </form>
+                    <% if (message) { %>
+                     <p><%= message%></p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<%- include ('footer') -%>

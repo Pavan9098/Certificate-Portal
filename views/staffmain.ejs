@@ -1,0 +1,26 @@
+<%- include('header') %>
+
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #EAD196;">
+    <button class="navbar-brand" style="background: #EAD196; border: none; padding: 0; font: inherit; cursor: pointer;">
+        <a href="/staff" style="background-color: maroon;color: beige; border-radius: 5px; margin:5px; padding: 5px; border-radius: 5px;" >Home</a>
+    </button>
+    <a class="nav-link ml-auto" style="background-color: maroon; border-radius: 5px;color: beige; border-radius: 5px; margin:5px; padding: 5px;" href="">Logout</a>
+</nav>
+<div id="parent-container" style="display: flex; justify-content: space-between;">
+    <div id="left-div">
+        <button style="background-color: #EAD196; color: maroon; border-radius: 5px; font-size: 24px; font-weight: bold; border: none; padding: 10px 20px; cursor: pointer;">
+            <a href="/newBatch" style="text-decoration: none; color: maroon;">Add new batch</a>
+        </button>
+    </div>
+    <div id="right-div">
+        <h2 style="text-decoration: underline; border-radius: 5px; color: maroon;">Batches</h2>
+        <% results.forEach(element => { %>
+            <button style="background-color: #F3EDC8; border-radius: 5px; color: maroon; font-size: 22px; font-weight: bold; border: none; padding: 5px 10px; cursor: pointer;">
+                <a href="/batches?batch=<%=element%>" style="text-decoration: none; border-radius: 5px; color: maroon;"> <%= element %> Batch</a>
+            </button>
+            <br>
+        <% }) %>
+    </div>
+</div>
+
+<%- include('footer') %>

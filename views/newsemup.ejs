@@ -1,0 +1,105 @@
+<%- include ('header') -%>
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand"  style="background-color: maroon;color: beige; border-radius: 5px;"  href="/batches?batch=<%=batch%>">/Back</a>
+    <a class="nav-link ml-auto " style="background-color: maroon;color: beige; border-radius: 5px;" href="" >Add new sem</a>
+  </nav>
+<div class="container px-3 py-4">
+    <h2  style="margin: 20px; box-sizing: content-box; padding: 10px; border-radius: 5px; text-align: center; background-color: #561C24; color: beige;">Batch  <%= batch %> </h2>
+    <br>
+
+    <div style="text-align: center;">
+        <br>
+        <input type="file" id="csvFileInput" accept=".csv">
+        <br>
+        <input type="text" id="batch" style="display: none;" value="<%= batch %>">
+        <br><br>
+        <button class="button btn-primary"  style="background-color: maroon;color: beige; border-radius: 5px;" onclick="convertCSVtoJSON()">Submit</button>
+        <br><br>
+        <p style="color:red;text-decoration: underline;">Instructions</p>
+        <ol>
+            <li>Please upload a csv file with two columns reg_no and link</li>
+            <li>Here reg_no is Regd no of student and Link is url for their certificate</li>
+            <li>Dont leave any numbers. If a student got failed fill the link value as "fail"</li>
+        </ol>
+    </div>
+</div>
+<script>
+    function convertCSVtoJSON() {
+        const fileInput = document.getElementById('csvFileInput');
+        const file = fileInput.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+            reader.readAsText(file);
+            reader.onload = function(event) {
+                const csvData = event.target.result;
+                console.log(csvData);
+                const jsonData = csvToJSON(csvData);
+                sendDataToBackend(jsonData);
+            }
+        } else {
+            alert('Please select a file.');
+        }
+    }
+
+    function csvToJSON(csvData) {
+        const lines = csvData.split('\n');
+        const result = [];
+        console.log('hello');
+        const headers = lines[0].split(',');
+
+        for (let i = 1; i < lines.length-1 ; i++) { // Discard the last row
+            console.log("i=",i);
+            const obj = {};
+            const currentLine = lines[i].split(',');
+
+            for (let j = 0; j < headers.length; j++) {
+                const key = headers[j].trim(); // Trim spaces from keys
+                let value = currentLine[j].trim(); // Trim spaces from values
+
+                if (key === 'Email') {
+                    value = value.replace(/\r/g, ''); // Remove \r characters from email field
+                }
+
+                obj[key] = value;
+            }
+
+            result.push(obj);
+        }
+
+        return JSON.stringify(result);
+    }
+
+    function sendDataToBackend(jsonData) {
+        var batch =parseInt(document.getElementById('batch').value);
+        console.log(batch);
+        fetch('/batches/addNewSem', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body:JSON.stringify({ // Convert the JavaScript object to a JSON string
+            "batch": batch,
+            "data": jsonData
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Data sent successfully:', data);
+            window.alert("Documents inserted successfully")
+        })
+        .catch(error => {
+            console.error('There was a problem with your fetch operation:', error);
+        });
+    }
+</script>
+
+
+<%- include ('footer') -%>
